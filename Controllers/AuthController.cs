@@ -74,7 +74,7 @@ namespace JwtSqlDemo.Controllers
                 {
                     user.UserId,
                     user.Username,
-                    user.IsVip  // สมมติมีคอลัมน์นี้
+                    user.IsVip  
                 }
             });
         }
@@ -99,6 +99,8 @@ namespace JwtSqlDemo.Controllers
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
+
+
 
             return Ok(new
             {
