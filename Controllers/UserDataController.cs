@@ -53,6 +53,54 @@ namespace JwtSqlDemo.Controllers
         }
 
 
+        //insert word 
+
+        [HttpPost("wordAdding/{userId}")]
+        public async Task<IActionResult> AddWordScore(int userId, [FromBody] InsertWordScore request)
+        {
+            if (string.IsNullOrEmpty(request.Word))
+                return BadRequest("Word is required");
+
+            var wordScore = new WordScore
+            {
+                Word = request.Word,
+                Score = request.Score,
+                 UserId = userId,
+                CreateTime = DateTime.Now
+            };
+
+            _context.WordScore.Add(wordScore);
+            await _context.SaveChangesAsync();
+
+            return Ok(wordScore);
+        }
+
+
+        [HttpDelete("DeleteWordAdding/{userId}")]
+        public async Task<IActionResult> DeleteWordScore(int userId, [FromBody] InsertWordScore request)
+        {
+            var wordScore = await _context.WordScore
+                .FirstOrDefaultAsync(ws => ws.UserId == userId && ws.Word == request.Word && ws.Score == request.Score);
+
+            if (wordScore == null)
+                return NotFound("WordScore not found");
+
+            _context.WordScore.Remove(wordScore);
+            await _context.SaveChangesAsync();
+
+            //return Ok($"Deleted Word '{request.Word}' for user {userId}");
+            return Ok(wordScore);
+        }
+
+
+
+
+
+
+
+
+
+
 
 
         // ตัวอย่าง: GET data/userdata/{userId}/wordscores?date=2025-07-30
