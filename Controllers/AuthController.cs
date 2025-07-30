@@ -79,5 +79,37 @@ namespace JwtSqlDemo.Controllers
             });
         }
 
-    }
+        //add user 
+        [HttpPost("register")]
+        public async Task<IActionResult> AddUser([FromBody] RegisterRequest request)
+        {
+            // ตรวจสอบว่ามี Username นี้ใน DB หรือยัง
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == request.Username);
+
+            if (existingUser != null)
+                return Conflict(new { message = "Username already exists" });
+
+            var newUser = new User
+            {
+                Username = request.Username,
+                Password = request.Password, 
+                IsVip = false                 
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "User added successfully",
+                user = new
+                {
+                    newUser.UserId,
+                    newUser.Username,
+                    newUser.IsVip
+                }
+            });
+
+        }
 }
