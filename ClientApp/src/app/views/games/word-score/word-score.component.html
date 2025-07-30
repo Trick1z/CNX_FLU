@@ -29,9 +29,9 @@
           </div>
 
           <button type="button" class="btn btn-success">Add</button>
-          <button type="button" class="btn btn-success" (click)="setVIP()">
+          <!-- <button type="button" class="btn btn-success" (click)="setVIP()">
             (dev)set vip
-          </button>
+          </button> -->
         </div>
 
         <table class="table table-striped">
@@ -40,6 +40,7 @@
               <th>#</th>
               <th>Word</th>
               <th>Score</th>
+              <th>Date</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -62,6 +63,7 @@
                 <td>{{ i + 1 }}</td>
                 <td>{{ star(item.word.length) }}</td>
                 <td>{{ star(item.score.toString().length) }}</td>
+                <td>{{ item.date | date:'dd/MM/yyyy HH:mm:ss' }}</td>
                 <td>
                   <button class="btn btn-danger btn-sm">Delete</button>
                 </td>

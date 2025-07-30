@@ -1,11 +1,12 @@
-import { NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-word-score',
-  imports: [NgIf, NgFor, FormsModule],
+  imports: [NgIf, NgFor, FormsModule,DatePipe],
   standalone: true,
   templateUrl: './word-score.component.html',
   styleUrl: './word-score.component.scss',
@@ -13,12 +14,14 @@ import { Route, Router } from '@angular/router';
 export class WordScoreComponent implements OnInit {
   ngOnInit(): void {
     this.total_score = this.sum_sc();
+    this.getData();
+    this.getUser();
   }
 
-  constructor(private route: Router) {}
+  constructor(private route: Router, private api: ApiService) {}
 
   GameStart: boolean = false;
-  IsVip: boolean = true;
+  IsVip!: boolean;
 
   startAndStopGame() {
     this.GameStart = !this.GameStart;
@@ -27,10 +30,6 @@ export class WordScoreComponent implements OnInit {
   // valuables
 
   words: WordScore[] = [
-    { word: 'left1', score: 21 },
-    { word: 'lefttt2', score: 22 },
-    { word: 'leftttt3', score: 23 },
-    { word: 'lefttttttt4', score: 24 },
   ];
 
   getWord: string | null = null;
@@ -52,15 +51,29 @@ export class WordScoreComponent implements OnInit {
     return '*'.repeat(length);
   }
 
-  //setvip
-  setVIP() {
-    this.IsVip = !this.IsVip;
+  //get user
+
+  getUser() {
+    var userData = sessionStorage.getItem('user')!;
+    var _userData = JSON.parse(userData).user;
+    this.IsVip = _userData.isVip;
   }
 
+  getData() {
+    var data = sessionStorage.getItem('user')!;
+    var id = JSON.parse(data).user.userId;
 
+    this.api.get(`data/userdata/${id}`).subscribe((res : any ) => {
+      console.log(res);
+
+      this.words = res
+
+    })
+  }
 }
 
 interface WordScore {
   word: string;
   score: number;
+  date : Date
 }
