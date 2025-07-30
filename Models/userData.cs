@@ -18,14 +18,16 @@ namespace JwtSqlDemo.Models
 		public int Score { get; set; }  = 0 ;
 
 
-		[Column("Create_time")]  
+		[Column("Create_time")]
 		public DateTime CreateTime { get; set; }
 	}
 
-	//public class WordScoreFilter
-	//{
-	//	public int UserId { get; set; } = 0 ;
-	//	public string DateTime Date { get; set; } = string.Empty;
-	//}
+	public class InsertWordScore
+	{
+		public required  string Word { get; set; }     // คำศัพท์
+		public required  int Score { get; set; }
+
+
+	}
 
 }
