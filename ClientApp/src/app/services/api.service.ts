@@ -25,8 +25,8 @@ export class ApiService {
     return this.http.put(url, data);
   }
 
-  delete(endpoint: string): Observable<any> {
-    const url = `${this.baseUrl}/${endpoint}`;
-    return this.http.delete(url);
-  }
+ delete(endpoint: string, data: any): Observable<any> {
+  const url = `${this.baseUrl}/${endpoint}`;
+  return this.http.delete(url, { body: data });
+}
 }
