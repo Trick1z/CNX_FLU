@@ -93,8 +93,8 @@ namespace JwtSqlDemo.Controllers
             var newUser = new User
             {
                 Username = request.Username,
-                Password = request.Password, 
-                IsVip = false                 
+                Password = request.Password,
+                IsVip = request.IsVip
             };
 
             _context.Users.Add(newUser);
@@ -112,4 +112,5 @@ namespace JwtSqlDemo.Controllers
             });
 
         }
+    }
 }
