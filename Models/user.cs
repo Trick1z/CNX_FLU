@@ -23,5 +23,6 @@ namespace JwtSqlDemo.Models
     {
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        public Boolean IsVip { get; set; } = false;
     }
 }
