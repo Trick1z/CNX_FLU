@@ -1,0 +1,6 @@
+@JwtSqlDemo_HostAddress = http://localhost:5069
+
+GET {{JwtSqlDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,83 @@
+﻿using JwtSqlDemo.Data;
+using JwtSqlDemo.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace JwtSqlDemo.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
+    {
+        private readonly AppDbContext _context;
+        private readonly IConfiguration _config;
+
+        public AuthController(AppDbContext context, IConfiguration config)
+        {
+            _context = context;
+            _config = config;
+        }
+
+        //[HttpPost("login")]
+        //public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        //{
+        //    var user = await _context.Users
+        //        .FirstOrDefaultAsync(u => u.Username == request.Username && u.Password == request.Password);
+
+        //    if (user == null)
+        //        return Unauthorized("Invalid credentials");
+
+        //    var token = GenerateJwtToken(user);
+        //    return Ok(new { token });
+        //}
+
+        //private string GenerateJwtToken(User user)
+        //{
+        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        //    var claims = new[]
+        //    {
+        //        new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+        //        new Claim("UserId", user.UserId.ToString())
+        //    };
+
+        //    var token = new JwtSecurityToken(
+        //        issuer: _config["Jwt:Issuer"],
+        //        audience: _config["Jwt:Audience"],
+        //        claims: claims,
+        //        expires: DateTime.Now.AddHours(1),
+        //        signingCredentials: credentials);
+
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
+
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == request.Username && u.Password == request.Password);
+
+            if (user == null)
+                return Unauthorized(new { message = "Invalid username or password" });
+
+            // Login ผ่าน
+            return Ok(new
+            {
+                message = "Login successful",
+                user = new
+                {
+                    user.UserId,
+                    user.Username,
+                    user.IsVip  // สมมติมีคอลัมน์นี้
+                }
+            });
+        }
+
+    }
+}

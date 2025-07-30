@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="game-box">
+    <ng-container *ngIf="!GameStart; else gameRunning">
+      <div class="btn">
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="startAndStopGame()"
+        >
+          Start
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #gameRunning>
+      <div>
+        <p>The game is running!</p>
+
+        <div class="add-word-box">
+          <div class="mb-3 username-box">
+            <label for="UsernameInput" class="form-label fw">"Word"</label>
+            <input
+              [(ngModel)]="getWord"
+              type="text"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder="connex"
+            />
+          </div>
+
+          <button type="button" class="btn btn-success">Add</button>
+          <button type="button" class="btn btn-success" (click)="setVIP()">
+            (dev)set vip
+          </button>
+        </div>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Word</th>
+              <th>Score</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="IsVip; else vip">
+              <tr *ngFor="let item of words; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.word }}</td>
+                <td>{{ item.score }}</td>
+                <td>
+                  <button class="btn btn-warning btn-sm">Edit</button>
+
+                  <button class="btn btn-danger btn-sm">Delete</button>
+                </td>
+              </tr>
+            </ng-container>
+
+            <ng-template #vip>
+              <tr *ngFor="let item of words; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ star(item.word.length) }}</td>
+                <td>{{ star(item.score.toString().length) }}</td>
+                <td>
+                  <button class="btn btn-danger btn-sm">Delete</button>
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+
+        <!-- <div class="card" *ngFor="let item of words; let i = index" >
+          <h4>{{i + 1}}</h4>
+          <h4>{{item.word}}</h4>
+
+        </div> -->
+
+        <h2>Total Score : {{ total_score }}</h2>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="startAndStopGame()"
+        >
+          Stop
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
