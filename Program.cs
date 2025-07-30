@@ -41,7 +41,21 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();  // เปิดใช้งาน Endpoint API explorer
+builder.Services.AddSwaggerGen();            // เพิ่ม Swagger generator
+
+
+
+
 var app = builder.Build();
+
+//if (app.Environment.IsDevelopment())
+//{
+    app.UseSwagger();            // เปิดใช้งาน Swagger middleware
+    app.UseSwaggerUI();          // เปิดใช้งาน Swagger UI
+//}
+
+
 app.UseCors("AllowAngular");
 
 app.UseRouting();
