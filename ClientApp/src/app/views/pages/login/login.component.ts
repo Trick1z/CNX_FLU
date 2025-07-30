@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('user', str_res );
 
         Swal.fire({
-          position: 'center-end',
+          position: 'center',
           icon: 'success',
           title: 'Login SuccessFully ! ',
           showConfirmButton: false,
