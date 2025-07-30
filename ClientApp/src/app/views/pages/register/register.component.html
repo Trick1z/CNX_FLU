@@ -38,9 +38,22 @@
         placeholder="********"
       />
     </div>
+
+    <!-- select vip  -->
+
+    <div class="select-vip">
+      <label for="SelectVipInput" class="form-label fw">User Type</label>
+      <select [(ngModel)]="data.isVip" class="form-select" aria-label="Default select example">
+        <option [ngValue]="false">Normal User</option>
+        <option [ngValue]="true">Vip User</option>
+      </select>
+    </div>
+
     <!-- btn groups -->
     <div class="btn-groups">
-      <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+      <button type="button" class="btn btn-primary" (click)="onSubmit()">
+        Submit
+      </button>
     </div>
 
     <!-- <div class="create-acc dpf-c" style="margin-top: 10px">
