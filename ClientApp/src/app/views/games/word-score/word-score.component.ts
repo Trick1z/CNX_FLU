@@ -61,61 +61,161 @@ export class WordScoreComponent implements OnInit {
     var id = JSON.parse(data).user.userId;
 
     this.api.get(`data/userdata/${id}`).subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
 
       this.words = res;
       this.total_score = this.sum_sc();
     });
   }
-
+  // logic here
   games(word: string) {
-    const vowel = {
-      A: 2,
-      E: 3,
-      I: 4,
-      O: 5,
-      U: 6,
-    };
+    if (this.IsVip) {
+      const vowel = {
+        A: 2,
+        E: 3,
+        I: 4,
+        O: 5,
+        U: 6,
+      };
 
-    const upperWord = word.toUpperCase();
-    let total = 0;
+      const upperWord = word.toUpperCase();
+      let total = 0;
 
-    let ScoreVowelGroup = 0;
-    let inVowelGroupState = false;
+      let ScoreVowelGroup = 0;
+      let inVowelGroupState = false;
+      let vowelGroupCount = 0;
 
-    for (let i = 0; i < upperWord.length; i++) {
-      const ch = word[i].toUpperCase() as keyof typeof vowel;
-      const isVowel = vowel[ch] !== undefined;
+      for (let i = 0; i < upperWord.length; i++) {
+        const ch = upperWord[i] as keyof typeof vowel;
+        const isVowel = vowel[ch] !== undefined;
 
-      if (isVowel) {
-        ScoreVowelGroup += vowel[ch];
-        inVowelGroupState = true;
-      } else {
-        if (inVowelGroupState) {
-          total += ScoreVowelGroup * 2;
-          ScoreVowelGroup = 0;
-          inVowelGroupState = false;
+        if (isVowel) {
+          ScoreVowelGroup += vowel[ch];
+          vowelGroupCount++;
+          inVowelGroupState = true;
+        } else {
+          // เจอพยัญชนะ => บวกคะแนนกลุ่มสระก่อนหน้า
+          if (inVowelGroupState) {
+            if (vowelGroupCount > 1) {
+              if (Math.random() < 0.10) {
+                console.log('(VIP) Lucky! Bonus x2 applied 🎉');
+                total += ScoreVowelGroup * 2;
+              } else {
+                total += ScoreVowelGroup;
+              }
+            } else {
+              total += ScoreVowelGroup;
+            }
+            // รีเซ็ตกลุ่มสระ
+            ScoreVowelGroup = 0;
+            vowelGroupCount = 0;
+            inVowelGroupState = false;
+          }
+
+          total += 1; // คะแนนพยัญชนะ
         }
-        total += 1;
       }
-    }
 
-    if (inVowelGroupState) {
-      total += ScoreVowelGroup * 2;
-    }
-
-    //
-    var new_str = '';
-
-    for (let _str = 0; _str < word.length; _str++) {
-      if (word[_str].toUpperCase() in vowel) {
-        new_str += word[_str].toUpperCase();
-      } else {
-        new_str += word[_str].toLowerCase();
+      // จัดการกรณีคำลงท้ายด้วยสระ (หลังจบลูป)
+      if (inVowelGroupState) {
+        if (vowelGroupCount > 1) {
+          if (Math.random() < 0.10) {
+            console.log('(VIP) Lucky! Bonus x2 applied at end 🎉');
+            total += ScoreVowelGroup * 2;
+          } else {
+            total += ScoreVowelGroup;
+          }
+        } else {
+          total += ScoreVowelGroup;
+        }
       }
-    }
 
-    return { word: new_str, score: total };
+      //
+      var new_str = '';
+
+      for (let _str = 0; _str < word.length; _str++) {
+        if (word[_str].toUpperCase() in vowel) {
+          new_str += word[_str].toUpperCase();
+        } else {
+          new_str += word[_str].toLowerCase();
+        }
+      }
+
+      return { word: new_str, score: total };
+    } else {
+      // normal user
+      const vowel = {
+        A: 2,
+        E: 3,
+        I: 4,
+        O: 5,
+        U: 6,
+      };
+
+      const upperWord = word.toUpperCase();
+      let total = 0;
+
+      let ScoreVowelGroup = 0;
+      let inVowelGroupState = false;
+      let vowelGroupCount = 0;
+
+      for (let i = 0; i < upperWord.length; i++) {
+        const ch = upperWord[i] as keyof typeof vowel;
+        const isVowel = vowel[ch] !== undefined;
+
+        if (isVowel) {
+          ScoreVowelGroup += vowel[ch];
+          vowelGroupCount++;
+          inVowelGroupState = true;
+        } else {
+          // เจอพยัญชนะ => บวกคะแนนกลุ่มสระก่อนหน้า
+          if (inVowelGroupState) {
+            if (vowelGroupCount > 1) {
+              if (Math.random() < 0.05) {
+                console.log('Lucky! Bonus x2 applied 🎉');
+                total += ScoreVowelGroup * 2;
+              } else {
+                total += ScoreVowelGroup;
+              }
+            } else {
+              total += ScoreVowelGroup;
+            }
+            // รีเซ็ตกลุ่มสระ
+            ScoreVowelGroup = 0;
+            vowelGroupCount = 0;
+            inVowelGroupState = false;
+          }
+
+          total += 1; // คะแนนพยัญชนะ
+        }
+      }
+
+      // จัดการกรณีคำลงท้ายด้วยสระ (หลังจบลูป)
+      if (inVowelGroupState) {
+        if (vowelGroupCount > 1) {
+          if (Math.random() < 0.05) {
+            console.log('Lucky! Bonus x2 applied at end 🎉');
+            total += ScoreVowelGroup * 2;
+          } else {
+            total += ScoreVowelGroup;
+          }
+        } else {
+          total += ScoreVowelGroup;
+        }
+      }
+
+      var new_str = '';
+
+      for (let _str = 0; _str < word.length; _str++) {
+        if (word[_str].toUpperCase() in vowel) {
+          new_str += word[_str].toUpperCase();
+        } else {
+          new_str += word[_str].toLowerCase();
+        }
+      }
+
+      return { word: new_str, score: total };
+    }
   }
 
   logicGame(word: string) {
@@ -214,20 +314,55 @@ export class WordScoreComponent implements OnInit {
   // edit
 
   editWord: string | null = null;
+  editId: number | null = null;
 
   EditPopup(word: string, id: number) {
     this.editWord = word;
+    this.editId = id;
+  }
 
-    console.log(word,id);
+  submitEdit() {
+    if (!this.editWord) {
+      return Swal.fire({
+        title: 'ไม่มีคำ',
+        text: 'กรุณาใส่คำที่ต้องการ',
+        icon: 'question',
+      });
+    }
 
+    var id = this.editId;
+    var word = this.editWord;
 
-    // this.api.put()
-    // console.log(this.words);
+    var data = this.games(word!);
+    this.api.put(`data/userdata/wordEditing/${id}`, data).subscribe({
+      next: (res: any) => {
+        this.getData();
+
+        return Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'แก้ไขคำสำเร็จ',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      },
+      error: (err) => {
+        this.getData();
+
+        return Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+      },
+    });
+
+    return;
   }
 }
 
 interface WordScore {
-  wordId : number;
+  wordId: number;
   word: string;
   score: number;
   date: Date;
