@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="game-box">
+  <div class="game-box" style="display: flex; flex-direction: column">
     <ng-container *ngIf="!GameStart; else gameRunning">
       <div class="btn">
         <button
@@ -16,7 +16,7 @@
       <div>
         <p>The game is running!</p>
 
-        <div class="add-word-box" *ngIf="words.length < 5" >
+        <div class="add-word-box" *ngIf="words.length < 5">
           <div class="mb-3 username-box">
             <label for="UsernameInput" class="form-label fw">"Word"</label>
             <input
@@ -32,7 +32,6 @@
             (click)="logicGame(getWord!)"
             type="button"
             class="btn btn-success"
-
           >
             Add
           </button>
@@ -63,7 +62,7 @@
                     class="btn btn-warning btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target="#Edit"
-                    (click)="EditPopup(item.word , item.wordId)"
+                    (click)="EditPopup(item.word, item.wordId)"
                   >
                     Edit
                   </button>
@@ -117,13 +116,68 @@
   </div>
 </div>
 
-<!-- Editmodel -->
-<!-- ปุ่มเปิด -->
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" >
-  Launch static backdrop modal
-</button> -->
+<!-- history box -->
+<div
+  class="history-box"
+  style="
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+  "
+>
+  <div class="left">
+    <div
+      class="header"
+      style="display: flex; flex-direction: column; align-items: center"
+    >
+      TopPlayer
+    </div>
 
+    <div class="card-group" *ngFor="let item of topFivePlayer; index as i">
+      <div class="card" style="margin: 5px">
+        <div class="card-header">
+          {{ item.username }} ( {{ item.isVip ? "VIP User" : "Normal User" }} )
+        </div>
+        <div class="card-body">
+          <figure>
+            <blockquote class="blockquote">
+              <p>Total Score : {{ item.score }}</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">Rank {{ i + 1 }}</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div
+      class="header"
+      style="display: flex; flex-direction: column; align-items: center"
+    >
+      My History
+    </div>
+    <div class="card-group" *ngFor="let item of myHistory; index as i">
+      <div class="card" style="margin: 5px">
+        <div class="card-header">
+          {{ item.createTime | date : "dd/MM/yyyy HH:mm:ss" }} ( Last Update )
+        </div>
+        <div class="card-body">
+          <figure>
+            <blockquote class="blockquote">
+              <p>Word : {{ item.word }}</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+              Score : {{ item.score }}
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Editmodel -->
 <!-- Modal -->
 <div
   class="modal fade"
@@ -146,25 +200,28 @@
         ></button>
       </div>
       <div class="modal-body">
-
         <div class="mb-3">
-          <label for="EditInput" class="form-label"
-            >Edit</label
-          >
+          <label for="EditInput" class="form-label">Edit</label>
           <input
-          [(ngModel)]="editWord"
+            [(ngModel)]="editWord"
             type="email"
             class="form-control"
             id="EditInput"
           />
         </div>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="button" data-bs-dismiss="modal" class="btn btn-primary" (click)="submitEdit()">Understood</button>
+        <button
+          type="button"
+          data-bs-dismiss="modal"
+          class="btn btn-primary"
+          (click)="submitEdit()"
+        >
+          Understood
+        </button>
       </div>
     </div>
   </div>
