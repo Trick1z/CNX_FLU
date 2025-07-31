@@ -16,7 +16,7 @@
       <div>
         <p>The game is running!</p>
 
-        <div class="add-word-box">
+        <div class="add-word-box" *ngIf="words.length < 5" >
           <div class="mb-3 username-box">
             <label for="UsernameInput" class="form-label fw">"Word"</label>
             <input
@@ -32,7 +32,7 @@
             (click)="logicGame(getWord!)"
             type="button"
             class="btn btn-success"
-            *ngIf="words.length < 5"
+
           >
             Add
           </button>
@@ -164,7 +164,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="button" data-bs-dismiss="modal" class="btn btn-primary" (click)="submitEdit()">Understood</button>
       </div>
     </div>
   </div>
