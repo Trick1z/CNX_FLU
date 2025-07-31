@@ -16,6 +16,8 @@ export class WordScoreComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     this.getUser();
+    this.getTopFive();
+    this.getMyHistory();
   }
 
   constructor(private route: Router, private api: ApiService) {}
@@ -376,6 +378,37 @@ export class WordScoreComponent implements OnInit {
 
     return;
   }
+
+  // history
+  topFivePlayer: TopFive[] = [];
+  getTopFive() {
+    this.api.get('api/history/top-players').subscribe((res: any) => {
+      console.log(res);
+      this.topFivePlayer = res;
+    });
+  }
+
+  myHistory: History[] = [];
+  getMyHistory() {
+    var data = sessionStorage.getItem('user')!;
+    var id = JSON.parse(data).user.userId;
+
+    this.api.get(`api/history/playerHistory/${id}`).subscribe((res: any) => {
+      this.myHistory = res;
+      console.log(res);
+    });
+  }
+}
+
+interface TopFive {
+  username: string;
+  score: number;
+  isVip: boolean;
+}
+interface History {
+  word: string;
+  score: number;
+  createTime: Date;
 }
 
 interface WordScore {
