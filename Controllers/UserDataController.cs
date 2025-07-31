@@ -37,17 +37,21 @@ namespace JwtSqlDemo.Controllers
                 .Where(ws => ws.UserId == userId
                           && ws.CreateTime >= today
                           && ws.CreateTime < tomorrow)
-                .Select(ws => new 
-        {
-            ws.Word,
-            ws.Score,
-            Date = ws.CreateTime   // ✅ จะ return แค่ 3 field
-        })
-        .ToListAsync();
+            .Select(ws => new
+            {
+                ws.WordId,
+                ws.Word,
+                ws.Score,
+                Date = ws.CreateTime
+            })
+            .ToListAsync();
 
-           
+
 
             return Ok(wordScores);
+
+
+
 
 
         }
