@@ -28,7 +28,14 @@
             />
           </div>
 
-          <button (click)="logicGame(getWord!)" type="button" class="btn btn-success" *ngIf="words.length < 5" >Add</button>
+          <button
+            (click)="logicGame(getWord!)"
+            type="button"
+            class="btn btn-success"
+            *ngIf="words.length < 5"
+          >
+            Add
+          </button>
           <!-- <button type="button" class="btn btn-success" (click)="setVIP()">
             (dev)set vip
           </button> -->
@@ -50,10 +57,23 @@
                 <td>{{ i + 1 }}</td>
                 <td>{{ item.word }}</td>
                 <td>{{ item.score }}</td>
+                <td>{{ item.date | date : "dd/MM/yyyy HH:mm:ss" }}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm">Edit</button>
+                  <button
+                    class="btn btn-warning btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#Edit"
+                    (click)="EditPopup(item.word , item.wordId)"
+                  >
+                    Edit
+                  </button>
 
-                  <button class="btn btn-danger btn-sm">Delete</button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="deleteWord(item)"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             </ng-container>
@@ -63,9 +83,14 @@
                 <td>{{ i + 1 }}</td>
                 <td>{{ star(item.word.length) }}</td>
                 <td>{{ star(item.score.toString().length) }}</td>
-                <td>{{ item.date | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+                <td>{{ item.date | date : "dd/MM/yyyy HH:mm:ss" }}</td>
                 <td>
-                  <button class="btn btn-danger btn-sm" (click)="deleteWord(item)">Delete</button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="deleteWord(item)"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             </ng-template>
@@ -89,5 +114,58 @@
         </button>
       </div>
     </ng-template>
+  </div>
+</div>
+
+<!-- Editmodel -->
+<!-- ปุ่มเปิด -->
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" >
+  Launch static backdrop modal
+</button> -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="Edit"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="EditLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="EditLabel">Word Editing</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label for="EditInput" class="form-label"
+            >Edit</label
+          >
+          <input
+          [(ngModel)]="editWord"
+            type="email"
+            class="form-control"
+            id="EditInput"
+          />
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
   </div>
 </div>
