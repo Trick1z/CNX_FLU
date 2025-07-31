@@ -61,11 +61,61 @@ export class WordScoreComponent implements OnInit {
     var id = JSON.parse(data).user.userId;
 
     this.api.get(`data/userdata/${id}`).subscribe((res: any) => {
-      // console.log(res);
+      console.log(res);
 
       this.words = res;
       this.total_score = this.sum_sc();
     });
+  }
+
+  games(word: string) {
+    const vowel = {
+      A: 2,
+      E: 3,
+      I: 4,
+      O: 5,
+      U: 6,
+    };
+
+    const upperWord = word.toUpperCase();
+    let total = 0;
+
+    let ScoreVowelGroup = 0;
+    let inVowelGroupState = false;
+
+    for (let i = 0; i < upperWord.length; i++) {
+      const ch = word[i].toUpperCase() as keyof typeof vowel;
+      const isVowel = vowel[ch] !== undefined;
+
+      if (isVowel) {
+        ScoreVowelGroup += vowel[ch];
+        inVowelGroupState = true;
+      } else {
+        if (inVowelGroupState) {
+          total += ScoreVowelGroup * 2;
+          ScoreVowelGroup = 0;
+          inVowelGroupState = false;
+        }
+        total += 1;
+      }
+    }
+
+    if (inVowelGroupState) {
+      total += ScoreVowelGroup * 2;
+    }
+
+    //
+    var new_str = '';
+
+    for (let _str = 0; _str < word.length; _str++) {
+      if (word[_str].toUpperCase() in vowel) {
+        new_str += word[_str].toUpperCase();
+      } else {
+        new_str += word[_str].toLowerCase();
+      }
+    }
+
+    return { word: new_str, score: total };
   }
 
   logicGame(word: string) {
@@ -90,51 +140,8 @@ export class WordScoreComponent implements OnInit {
       cancelButtonText: 'ไม่',
     }).then((result) => {
       if (result.isConfirmed) {
-        const vowel = {
-          A: 2,
-          E: 3,
-          I: 4,
-          O: 5,
-          U: 6,
-        };
+        var res = this.games(word);
 
-        const upperWord = word.toUpperCase();
-        let total = 0;
-
-        let ScoreVowelGroup = 0;
-        let inVowelGroupState = false;
-
-        for (let i = 0; i < upperWord.length; i++) {
-          const ch = word[i].toUpperCase() as keyof typeof vowel;
-          const isVowel = vowel[ch] !== undefined;
-
-          if (isVowel) {
-            ScoreVowelGroup += vowel[ch];
-            inVowelGroupState = true;
-          } else {
-            if (inVowelGroupState) {
-              total += ScoreVowelGroup * 2;
-              ScoreVowelGroup = 0;
-              inVowelGroupState = false;
-            }
-            total += 1;
-          }
-        }
-
-        if (inVowelGroupState) {
-          total += ScoreVowelGroup * 2;
-        }
-
-        //
-        var new_str = '';
-
-        for (let _str = 0; _str < word.length; _str++) {
-          if (word[_str].toUpperCase() in vowel) {
-            new_str += word[_str].toUpperCase();
-          } else {
-            new_str += word[_str].toLowerCase();
-          }
-        }
         Swal.fire({
           title: 'สำเร็จ',
           text: 'เพิ่มคำสำเร็จ',
@@ -142,8 +149,8 @@ export class WordScoreComponent implements OnInit {
         });
 
         return this.SubmitWord({
-          word: new_str,
-          score: total,
+          word: res.word,
+          score: res.score,
         });
       }
 
@@ -161,6 +168,8 @@ export class WordScoreComponent implements OnInit {
       word: data.word,
       score: data.score,
     };
+
+    this.getWord = null;
 
     this.api
       .post(`data/userdata/wordAdding/${id}`, newData)
@@ -188,7 +197,6 @@ export class WordScoreComponent implements OnInit {
         this.api
           .delete(`data/userdata/DeleteWordAdding/${id}`, newData)
           .subscribe(() => {
-
             this.getData();
             return Swal.fire({
               position: 'center',
@@ -198,14 +206,28 @@ export class WordScoreComponent implements OnInit {
               timer: 1500,
             });
           });
-
       }
       return;
     });
   }
+
+  // edit
+
+  editWord: string | null = null;
+
+  EditPopup(word: string, id: number) {
+    this.editWord = word;
+
+    console.log(word,id);
+
+
+    // this.api.put()
+    // console.log(this.words);
+  }
 }
 
 interface WordScore {
+  wordId : number;
   word: string;
   score: number;
   date: Date;
