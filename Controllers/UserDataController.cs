@@ -55,7 +55,25 @@ namespace JwtSqlDemo.Controllers
 
 
         }
+        [HttpPut("wordEditing/{wordId}")]
+        public async Task<IActionResult> EditWording(int wordId, [FromBody] EditWordRequest request)
+        {
+            //var res = new
+            //{
+            //    Word = request.Word,   
+            //    Id = wordId
+            //};
 
+            var word = await _context.WordScore.FindAsync(wordId);
+            if (word == null)
+                return NotFound();
+
+            word.Word = request.Word;
+            word.Score = request.Score;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Word updated", data = word });
+        }
 
         //insert word 
 
