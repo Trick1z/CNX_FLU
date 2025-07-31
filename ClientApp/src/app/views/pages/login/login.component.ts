@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.api.post('api/auth/login', this.data).subscribe({
       next: (res: any) => {
-        console.log(res);
+        // console.log(res);
 
         var str_res = JSON.stringify(res)
 

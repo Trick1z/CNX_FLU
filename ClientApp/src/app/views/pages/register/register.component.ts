@@ -37,7 +37,7 @@ export class RegisterComponent {
 
       this.api.post('api/auth/register', this.data).subscribe({
         next: (res: any) => {
-          console.log(res);
+          // console.log(res);
 
           Swal.fire({
             position: 'center-end',
