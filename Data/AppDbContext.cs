@@ -24,6 +24,9 @@ namespace JwtSqlDemo.Data
             modelBuilder.Entity<Test>()
                 .HasNoKey()
                 .ToView("vw_getUser");
+
+            modelBuilder.Entity<WordScore>()
+        .ToTable(tb => tb.UseSqlOutputClause(false));
         }
     }
 }
