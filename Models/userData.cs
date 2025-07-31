@@ -30,4 +30,11 @@ namespace JwtSqlDemo.Models
 
 	}
 
+    public class EditWordRequest
+    {
+        public string Word { get; set; } = string.Empty;
+        public int Score { get; set; } = 0;
+    }
+
+
 }
