@@ -97,7 +97,7 @@ export class WordScoreComponent implements OnInit {
           // เจอพยัญชนะ => บวกคะแนนกลุ่มสระก่อนหน้า
           if (inVowelGroupState) {
             if (vowelGroupCount > 1) {
-              if (Math.random() < 0.10) {
+              if (Math.random() < 0.1) {
                 console.log('(VIP) Lucky! Bonus x2 applied 🎉');
                 total += ScoreVowelGroup * 2;
               } else {
@@ -119,7 +119,7 @@ export class WordScoreComponent implements OnInit {
       // จัดการกรณีคำลงท้ายด้วยสระ (หลังจบลูป)
       if (inVowelGroupState) {
         if (vowelGroupCount > 1) {
-          if (Math.random() < 0.10) {
+          if (Math.random() < 0.1) {
             console.log('(VIP) Lucky! Bonus x2 applied at end 🎉');
             total += ScoreVowelGroup * 2;
           } else {
@@ -271,11 +271,28 @@ export class WordScoreComponent implements OnInit {
 
     this.getWord = null;
 
-    this.api
-      .post(`data/userdata/wordAdding/${id}`, newData)
-      .subscribe((res: any) => {
+    this.api.post(`data/userdata/wordAdding/${id}`, newData).subscribe({
+      next: (res: any) => {
         return this.getData();
-      });
+      },
+      error: (err) => {
+        // this.getData();
+
+        if (err.status === 409) {
+          return Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'ไม่สามารถใช้คำซ้ำได้',
+          });
+        } else {
+          return Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something when wrong !',
+          });
+        }
+      },
+    });
   }
 
   deleteWord(data: InsertWordScore) {
