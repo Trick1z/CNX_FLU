@@ -20,6 +20,8 @@ namespace JwtSqlDemo.Models
 
 		[Column("Create_time")]
 		public DateTime CreateTime { get; set; }
+		[Column("Update_time")]
+		public DateTime UpdateTime { get; set; }
 	}
 
 	public class InsertWordScore
