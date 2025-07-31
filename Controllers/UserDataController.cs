@@ -70,6 +70,7 @@ namespace JwtSqlDemo.Controllers
 
             word.Word = request.Word;
             word.Score = request.Score;
+
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Word updated", data = word });
@@ -82,6 +83,15 @@ namespace JwtSqlDemo.Controllers
         {
             if (string.IsNullOrEmpty(request.Word))
                 return BadRequest("Word is required");
+
+
+            bool wordExists = await _context.WordScore
+        .AnyAsync(ws => ws.UserId == userId && ws.Word == request.Word);
+
+            if (wordExists)
+                return Conflict("This word already exists for the user."); 
+
+
 
             var wordScore = new WordScore
             {
