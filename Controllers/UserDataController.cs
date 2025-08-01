@@ -98,7 +98,8 @@ namespace JwtSqlDemo.Controllers
                 Word = request.Word,
                 Score = request.Score,
                  UserId = userId,
-                CreateTime = DateTime.Now
+                CreateTime = DateTime.Now,
+                 UpdateTime = DateTime.Now
             };
 
             _context.WordScore.Add(wordScore);
