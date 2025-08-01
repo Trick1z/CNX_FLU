@@ -227,9 +227,206 @@
   </div>
 </div>
 
+<ng-container *ngIf="IsVip; else grid_vip">
+  <div class="container">
+    <dx-data-grid id="gridContainer" [dataSource]="words" [showBorders]="true">
+      <dxo-editing
+        mode="row"
+        [allowAdding]="false"
+        [allowUpdating]="false"
+        [allowDeleting]="false"
+      >
+      </dxo-editing>
+      <dxo-editing mode="row"> </dxo-editing>
+      <dxi-column dataField="word" [width]="160" [caption]="'คำ'"></dxi-column>
 
-<dx-data-grid
-  [dataSource]="temp"
-  keyExpr="ID"
-  [height]="400">   <!-- ให้ความสูงชัดเจน -->
-</dx-data-grid>
+      <dxi-column
+        dataField="score"
+        [width]="80"
+        [caption]="'คะแนน'"
+      ></dxi-column>
+
+      <dxi-column dataField="date" caption="วันที่">
+        <ng-template dxTemplate="cell" let-data>
+          {{ data.value | date : "dd/MM/yyyy" }}
+        </ng-template>
+      </dxi-column>
+
+      <dxi-column
+        [caption]="'#'"
+        [width]="240"
+        cellTemplate="cellTemplateButton"
+      ></dxi-column>
+
+      <div *dxTemplate="let data of 'cellTemplateButton'">
+        <div class="btn">
+          <dx-button
+            stylingMode="contained"
+            text="Editsss"
+            type="success"
+            [width]="80"
+          >
+          </dx-button>
+        </div>
+        <div class="btn">
+          <dx-button
+            stylingMode="contained"
+            text="Delete"
+            type="danger"
+            [width]="80"
+          >
+          </dx-button>
+        </div>
+      </div>
+      <dxo-paging [pageSize]="10"></dxo-paging>
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+    </dx-data-grid>
+  </div>
+</ng-container>
+
+<ng-template #grid_vip>
+  <div class="container">
+    <dx-data-grid id="gridContainer" [dataSource]="words" [showBorders]="true">
+      <dxo-editing
+        mode="row"
+        [allowAdding]="false"
+        [allowUpdating]="false"
+        [allowDeleting]="false"
+      >
+      </dxo-editing>
+      <dxo-editing mode="row"> </dxo-editing>
+
+      <dxi-column
+        dataField="word"
+        caption="คำ"
+        [width]="160"
+        cellTemplate="wordTemplate"
+      >
+      </dxi-column>
+
+      <div class="" *dxTemplate="let cell of 'wordTemplate'">
+        {{ star(cell.value.length) }}
+      </div>
+
+      <!-- <ng-template *dxTemplate="let cell of 'wordTemplate'" let-cellData>
+      </ng-template> -->
+
+      <dxi-column
+        dataField="score"
+        [width]="80"
+        [caption]="'คะแนน'"
+        cellTemplate="scoreTemplate"
+      ></dxi-column>
+      <div class="" *dxTemplate="let cell of 'scoreTemplate'">
+        {{ star(cell.value.toString().length) }}
+      </div>
+
+      <dxi-column dataField="date" caption="วันที่">
+        <ng-template dxTemplate="cell" let-data>
+          {{ data.value | date : "dd/MM/yyyy" }}
+        </ng-template>
+      </dxi-column>
+
+      <dxi-column
+        [caption]="'#'"
+        [width]="140"
+        cellTemplate="cellTemplateButton"
+      ></dxi-column>
+
+      <div *dxTemplate="let data of 'cellTemplateButton'">
+        <div class="btn">
+          <dx-button (onClick)="deleteWord(data.data)"
+            stylingMode="contained"
+            text="Delete"
+            type="danger"
+            [width]="80"
+          >
+          </dx-button>
+        </div>
+      </div>
+      <dxo-paging [pageSize]="10"></dxo-paging>
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+    </dx-data-grid>
+  </div>
+</ng-template>
+
+<!--
+<div class="container">
+  <dx-data-grid
+    id="gridContainer"
+    [dataSource]="productData"
+    [showBorders]="true"
+  >
+    <dxo-editing
+      mode="row"
+      [allowAdding]="false"
+      [allowUpdating]="false"
+      [allowDeleting]="false"
+    >
+    </dxo-editing>
+    <dxo-editing mode="row"> </dxo-editing>
+    <dxi-column
+      [caption]="'ข้อมูลการยืม'"
+      [width]="90"
+      cellTemplate="cellTemplateDelte"
+    ></dxi-column>
+
+    <div *dxTemplate="let data of 'cellTemplateDelte'">
+      <button
+        cButton
+        color="primary"
+        (click)="getProductCount(data.values)"
+        class="white-text"
+        style="margin-right: 10px"
+      >
+        ข้อมูล
+      </button>
+    </div>
+    <dxi-column dataField="PRODUCT_ID" [width]="50" [caption]="'ID'">
+    </dxi-column>
+    <dxi-column
+      dataField="PRODUCT_NAME"
+      [width]="160"
+      [caption]="'ชื่อ'"
+    ></dxi-column>
+    <dxi-column dataField="PRODUCT_BAND" [caption]="'ยี่ห้อ'"></dxi-column>
+    <dxi-column
+      dataField="PRODUCT_SERIALNUMBER"
+      [caption]="'Serial Numbers'"
+    ></dxi-column>
+    <dxi-column
+      dataField="PRODUCT_EQUIPMENTNUMBER"
+      [caption]="'รหัสครุภัณฑ์'"
+    ></dxi-column>
+
+    <dxo-paging [pageSize]="100"></dxo-paging>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+  </dx-data-grid>
+</div>
+-->
+
+<!-- <dx-popup
+  [width]="1400"
+  [height]="600"
+  [hideOnOutsideClick]="true"
+  [showCloseButton]="true"
+  [(visible)]="popupDetail"
+  title="ข้อมูลการยืม ครุภัณฑ์"
+>
+  <h1>ถูกยืมไปเเล้ว : {{count}} ครั้ง</h1>
+
+  <div class="info-card">
+    <c-col lg="6" xs="12">
+      <c-widget-stat-f
+        [title]="'จำนวนที่ยืมไปแล้ว'"
+        class="mb-3"
+        color="primary"
+        padding
+        value="{{count}}"
+      >
+        <ng-template cTemplateId="widgetIconTemplate">
+          <svg [cIcon]="icons.cilCalendarCheck" size="xl" width="24"></svg>
+        </ng-template>
+      </c-widget-stat-f>
+    </c-col>
+  </div>  -->
