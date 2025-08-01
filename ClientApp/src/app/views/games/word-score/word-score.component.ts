@@ -408,7 +408,7 @@ interface TopFive {
 interface History {
   word: string;
   score: number;
-  createTime: Date;
+  updateTime: Date;
 }
 
 interface WordScore {
