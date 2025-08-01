@@ -4,13 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import Swal from 'sweetalert2';
+import { DxDataGridModule } from 'devextreme-angular';
 
 @Component({
   selector: 'app-word-score',
-  imports: [NgIf, NgFor, FormsModule, DatePipe],
+  imports: [NgIf, NgFor, FormsModule, DatePipe, DxDataGridModule],
   standalone: true,
   templateUrl: './word-score.component.html',
-  styleUrl: './word-score.component.scss',
+  // styleUrl: './word-score.component.scss',
+
+  styleUrls: ['./word-score.component.scss'], // <-- แก้ตรงนี้
 })
 export class WordScoreComponent implements OnInit {
   ngOnInit(): void {
@@ -19,6 +22,25 @@ export class WordScoreComponent implements OnInit {
     this.getTopFive();
     this.getMyHistory();
   }
+  columns = ['CompanyName', 'City', 'State', 'Phone', 'Fax'];
+  temp = [
+    {
+      ID: 1,
+      CompanyName: 'ABC',
+      City: 'Bangkok',
+      State: '',
+      Phone: '',
+      Fax: '',
+    },
+    {
+      ID: 2,
+      CompanyName: 'XYZ',
+      City: 'Chiang Mai',
+      State: '',
+      Phone: '',
+      Fax: '',
+    },
+  ];
 
   constructor(private route: Router, private api: ApiService) {}
 
