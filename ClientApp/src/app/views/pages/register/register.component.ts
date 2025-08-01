@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [FormsModule, HttpClientModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  // styleUrl: './register.component.scss',
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
   data: UserData = {};

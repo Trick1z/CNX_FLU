@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   standalone: true,
 
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+  // styleUrl: './navbar.component.scss',
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   Username: string = 'Unknown User';

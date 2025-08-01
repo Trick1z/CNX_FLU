@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
   imports: [FormsModule, HttpClientModule],
   standalone: true,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrls: ['./login.component.scss'],
+  // styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
   ngOnInit(): void {}
