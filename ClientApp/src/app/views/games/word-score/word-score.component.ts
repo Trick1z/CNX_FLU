@@ -4,11 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import Swal from 'sweetalert2';
+
+// devex
 import { DxDataGridModule } from 'devextreme-angular';
+import { DxButtonModule } from 'devextreme-angular/ui/button';
+import { DxTemplateModule } from 'devextreme-angular/core/template';
+// import { DxToolbarModule } from 'devextreme-angular/ui/toolbar';
 
 @Component({
   selector: 'app-word-score',
-  imports: [NgIf, NgFor, FormsModule, DatePipe, DxDataGridModule],
+  imports: [
+    NgIf,
+    NgFor,
+    FormsModule,
+    DatePipe,
+    DxDataGridModule,
+    DxButtonModule,
+  ],
   standalone: true,
   templateUrl: './word-score.component.html',
   // styleUrl: './word-score.component.scss',
@@ -69,8 +81,14 @@ export class WordScoreComponent implements OnInit {
   }
 
   star(length: number) {
-    return '*'.repeat(length);
+    return '⭐'.repeat(length);
+    // return '*'.repeat(length);
   }
+  // stars(length: number) {
+  //   console.log(length);
+
+  //   return '*'.repeat(length);
+  // }
 
   //get user
 
@@ -420,6 +438,15 @@ export class WordScoreComponent implements OnInit {
       console.log(res);
     });
   }
+
+
+  test(data : any ){
+console.log(data);
+
+
+  }
+
+
 }
 
 interface TopFive {
